@@ -1,0 +1,14 @@
+{
+  "name": "telegram-extractor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "telegramExtractor.js",
+  "type": "module",
+  "scripts": {
+    "start": "node telegramExtractor.js"
+  },
+  "dependencies": {
+    "input": "1.0.1",
+    "telegram": "^2.0.0"
+  }
+}
