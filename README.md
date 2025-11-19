@@ -3,6 +3,8 @@
 Script sencillo para extraer mensajes del canal *DGI – Dividendos Crecientes* y de sus dos subcanales.
 Todo viene ya configurado, solo tienes que ejecutarlo.
 
+* Siempre se pedirá una fecha, y el extractor descargará todos los mensajes desde esa fecha hasta la último.
+
 
 ## 🔧 Requisitos
 
