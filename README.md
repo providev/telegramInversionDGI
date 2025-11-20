@@ -8,6 +8,8 @@ Todo viene ya configurado, solo hay que ejecutarlo.
 
 ## 🔧 Prerequisitos
 
+Desde la consola o terminal del sistema operativo (cmd o powershell en windows, terminal en Linux o Macos...)
+
 1. Instalar Node.js
    Descárgalo desde: https://nodejs.org
    (Vale cualquier versión moderna: 18, 20, 22…)
