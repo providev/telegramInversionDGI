@@ -55,10 +55,12 @@ async function main() {
     choice === "1" ? "INVERSION_DGI" : "RINCON_DE_PENSAR";
   const mainMessageId = SUBCHANNELS[subchannelName];
 
-  // 🔹 Solicitar fecha de inicio
-  let startDateInput, endDate;
+  // 🔹 Solicitar fecha DESDE
+  let startDate;
   while (true) {
-    startDateInput = await input.text("Introduce la fecha DESDE (DD/MM/YYYY): ");
+    const startDateInput = await input.text(
+      "Introduce la fecha DESDE (DD/MM/YYYY): "
+    );
     const [day, month, year] = startDateInput.split("/").map(Number);
     if (
       !isNaN(day) &&
@@ -69,20 +71,49 @@ async function main() {
       month >= 1 &&
       month <= 12
     ) {
-      endDate = new Date(Date.UTC(year, month - 1, day, 0, 0, 0));
+      startDate = new Date(Date.UTC(year, month - 1, day, 0, 0, 0));
       break;
     } else {
-      console.log("⚠️  Formato inválido. Usa DD/MM/YYYY, por ejemplo 27/10/2025");
+      console.log(
+        "⚠️  Formato inválido. Usa DD/MM/YYYY, por ejemplo 27/10/2025"
+      );
+    }
+  }
+
+  // 🔹 Solicitar fecha HASTA (opcional)
+  let endDate = null;
+  const endDateInputRaw = await input.text(
+    "Introduce la fecha HASTA (DD/MM/YYYY) o deja vacía: "
+  );
+  if (endDateInputRaw.trim() !== "") {
+    const [day, month, year] = endDateInputRaw.split("/").map(Number);
+    if (
+      !isNaN(day) &&
+      !isNaN(month) &&
+      !isNaN(year) &&
+      day >= 1 &&
+      day <= 31 &&
+      month >= 1 &&
+      month <= 12
+    ) {
+      endDate = new Date(Date.UTC(year, month - 1, day, 23, 59, 59));
+    } else {
+      console.log(
+        "⚠️  Formato inválido de HASTA. Se ignorará y se tomarán todos los mensajes recientes."
+      );
     }
   }
 
   // 🔹 Construcción del nombre del archivo de salida
-  const startDateStr = endDate.toISOString().split("T")[0];
+  const startDateStr = startDate.toISOString().split("T")[0];
   const execDateStr = new Date().toISOString().split("T")[0];
   const JSON_FILE = `./${subchannelName}_${startDateStr}_${execDateStr}.json`;
 
   console.log(`\n📂 Subcanal: ${subchannelName}`);
-  console.log(`📅 Fecha desde: ${startDateInput}`);
+  console.log(`📅 Fecha desde: ${startDate.toISOString()}`);
+  console.log(
+    `📅 Fecha hasta: ${endDate ? endDate.toISOString() : "sin límite"}`
+  );
   console.log(`💾 Archivo de salida: ${JSON_FILE}\n`);
 
   const startTime = Date.now();
@@ -94,7 +125,8 @@ async function main() {
   });
 
   await client.start({
-    phoneNumber: async () => await input.text("Introduce tu número de teléfono (34XXXXXXXXX): "),
+    phoneNumber: async () =>
+      await input.text("Introduce tu número de teléfono (34XXXXXXXXX): "),
     password: async () => await input.text("Contraseña 2FA (si tienes): "),
     phoneCode: async () => await input.text("Código recibido en Telegram: "),
     onError: (err) => console.log("Error de login:", err),
@@ -122,12 +154,16 @@ async function main() {
   const saveJson = () => {
     results.sort((a, b) => new Date(a.date) - new Date(b.date));
     fs.writeFileSync(JSON_FILE, JSON.stringify(results, null, 2), "utf8");
-    console.log(`💾 Archivo actualizado: ${JSON_FILE} (total: ${results.length})`);
+    console.log(
+      `💾 Archivo actualizado: ${JSON_FILE} (total: ${results.length})`
+    );
   };
 
   // Guardar el mensaje principal si aplica
+  const mainMsgDate = new Date(mainMsg.date * 1000);
   if (
-    new Date(mainMsg.date * 1000) >= endDate &&
+    mainMsgDate >= startDate &&
+    (!endDate || mainMsgDate <= endDate) &&
     !results.find((m) => m.id === mainMsg.id)
   ) {
     results.push(createMsgObj(mainMsg));
@@ -152,7 +188,8 @@ async function main() {
     for (const msg of batch) {
       if (!msg.date) continue;
       const msgDate = new Date(msg.date * 1000);
-      if (msgDate < endDate) continue;
+      if (msgDate < startDate) continue; // fuera de rango
+      if (endDate && msgDate > endDate) continue; // fuera de rango superior
       allMessages.set(msg.id, msg);
       if (msg.id < minIdInBatch) minIdInBatch = msg.id;
     }
@@ -171,6 +208,10 @@ async function main() {
     newAdded = 0;
     for (const msg of allMessages.values()) {
       if (savedIds.has(msg.id)) continue;
+
+      const msgDate = new Date(msg.date * 1000);
+      if (msgDate < startDate) continue;
+      if (endDate && msgDate > endDate) continue;
 
       if (
         msg.replyToMsgId === mainMessageId ||
@@ -195,7 +236,11 @@ async function main() {
   console.log("====================================");
   console.log(`📦 Total de mensajes guardados: ${results.length}`);
   console.log(`💾 Archivo generado: ${JSON_FILE}`);
-  console.log(`📅 Desde: ${startDateInput}  Hasta: ${execDateStr}`);
+  console.log(
+    `📅 Desde: ${startDate.toISOString()}  Hasta: ${
+      endDate ? endDate.toISOString() : execDateStr
+    }`
+  );
   console.log(`⏱️ Duración total: ${durationMin} minutos`);
   console.log("====================================\n");
 
@@ -203,7 +248,9 @@ async function main() {
     await client.disconnect();
     console.log("🔌 Cliente desconectado correctamente.\n");
   } catch (err) {
-    console.warn("⚠️  Advertencia: el cliente ya estaba desconectado o la conexión expiró.");
+    console.warn(
+      "⚠️  Advertencia: el cliente ya estaba desconectado o la conexión expiró."
+    );
   }
 
   console.log("🎉 Proceso completado sin errores críticos.\n");
