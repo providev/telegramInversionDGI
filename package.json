@@ -5,8 +5,8 @@
   "scripts": {
     "install:all": "npm install && cd server && npm install && cd ../client && npm install",
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "unset PREFIX npm_config_prefix && export NVM_DIR=\"$HOME/.nvm\" && [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\" && nvm use 20 && cd server && node index.js",
-    "client": "unset PREFIX npm_config_prefix && export NVM_DIR=\"$HOME/.nvm\" && [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\" && nvm use 20 && cd client && npm run dev",
+    "server": "cd server && node index.js",
+    "client": "cd client && npm run dev",
     "dev": "npm start"
   },
   "dependencies": {
