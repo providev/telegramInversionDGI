@@ -406,7 +406,7 @@ Asegúrate de que el resumen sea claro, estructurado y conciso, orientado a que 
                                 <Option value="OPCIONES">OPCIONES</Option>
                                 <Option value="BROKERS_Y_APPS">BROKERS_Y_APPS</Option>
                                 <Option value="OTRAS_ESTRATEGIAS">OTRAS_ESTRATEGIAS</Option>
-                                <Option value="FONTOS_Y_ETFS">FONTOS_Y_ETFS</Option>
+                                <Option value="FONDOS_Y_ETFS">FONDOS_Y_ETFS</Option>
                                 <Option value="CLUB_LECTURA">CLUB_LECTURA</Option>
                                 <Option value="NOTICIAS_ANUNCIOS_DGI">NOTICIAS_ANUNCIOS_DGI</Option>
                                 <Option value="FISCALIDAD_INVERSION">FISCALIDAD_INVERSION</Option>

@@ -53,7 +53,7 @@ Cuando el servidor esté ejecutándose en la terminal, puedes detenerlo con:
         -   OPCIONES
         -   BROKERS_Y_APPS
         -   OTRAS_ESTRATEGIAS
-        -   FONTOS_Y_ETFS
+        -   FONDOS_Y_ETFS
         -   CLUB_LECTURA
         -   NOTICIAS_ANUNCIOS_DGI
         -   FISCALIDAD_INVERSION
