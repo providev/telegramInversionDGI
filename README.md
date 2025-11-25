@@ -1,10 +1,7 @@
 # 📡 Telegram Extractor
 
 Script sencillo para extraer mensajes del canal *DGI – Dividendos Crecientes* y de sus dos subcanales.
-Todo viene ya configurado, solo hay que ejecutarlo.
-
-* Siempre se pedirá una fecha, y el extractor descargará todos los mensajes desde esa fecha hasta la último.
-
+Ahora incluye una interfaz web para visualizar y gestionar las descargas.
 
 ## 🔧 Prerequisitos
 
@@ -15,61 +12,94 @@ Desde la consola o terminal del sistema operativo (cmd o powershell en windows, 
    (Vale cualquier versión moderna: 18, 20, 22…)
 
 2. Tener una cuenta de Telegram
-   Para validar al usuario el script pedirá el teléfono (34XXXXXXXXX) y el código que Telegram envíe.
-
+   Para validar al usuario el script pedirá el teléfono (+34XXXXXXXXX) y el código que Telegram envíe.
 
 ## 📥 Instalación (primera vez)
 
 1. Descargar o clonar este proyecto.
 2. Abrir una terminal o consola dentro de la carpeta.
-3. Instalar dependencias. Ejecutar:
+3. Instalar dependencias de todo el proyecto (servidor y cliente). Ejecutar:
 
 ```bash
-npm install
+npm run install:all
 ```
 
 ## ▶️ Ejecución
 
-Ejecuta:
+Ejecuta el siguiente comando para iniciar tanto el servidor como el cliente web:
 
 ```bash
-npm run start
+npm start
 ```
 
-- El programa pedirá:
+Esto abrirá automáticamente:
+- **Servidor**: En segundo plano conectándose a Telegram.
+- **Cliente Web**: Normalmente en `http://localhost:5173` (o el puerto que asigne Vite).
 
-    - Elegir el subcanal a extraer:
+Cuando el servidor esté ejecutándose en la terminal, puedes detenerlo con:
 
-        - INVERSION_DGI
-        - RINCON_DE_PENSAR
+**Ctrl + C** (funciona en Windows, macOS y Linux)
 
-    - Introducir la fecha DESDE la que se quieren descargar los mensajes en formato dd/MM/YYYY.
+### Uso desde la Web
 
-    - Tu número de teléfono, el código que Telegram te envía, contraseña 2FA (solo si hace falta). Este paso sólo lo pedirá la primera vez y la sesión se guardará para posteriores ejecuciones.
+1.  **Conexión**:
+    -   Si es la primera vez, la propia web te pedirá tu número de teléfono y el código que te envíe Telegram (no hace falta mirar la terminal).
+    -   Una vez autenticado, la sesión se guarda en el servidor y no hará falta en posteriores ejecuciones.
+2.  **Interfaz**:
+    -   Selecciona el subcanal:
+        -   INVERSION_DGI
+        -   RINCON_DE_PENSAR
+        -   ANALISIS_TECNICO
+        -   OPCIONES
+        -   BROKERS_Y_APPS
+        -   OTRAS_ESTRATEGIAS
+        -   FONTOS_Y_ETFS
+        -   CLUB_LECTURA
+        -   NOTICIAS_ANUNCIOS_DGI
+        -   FISCALIDAD_INVERSION
+    -   Elige la fecha de inicio.
+    -   Pulsa "Extraer Mensajes".
 
 ## ▶️ Resultados
 
-- Se generará un archivo .json con los mensajes descargados.
-- La sesión de Telegram se guarda en session.txt para no volver a iniciar sesión.
+-   Los mensajes descargados aparecerán automáticamente en la tabla **"Archivos Generados"**.
+-   Desde ahí puedes **descargar** el archivo `.json` a tu ordenador o eliminarlo.
+-   Podrás ver el progreso detallado en la sección de "Logs de Extracción".
 
-✔️ Listo
+## Generar informe con IA (Gemini, ChatGPT, etc.)
 
-- Al terminar, verás el número total de mensajes guardados y el nombre del archivo generado.
+La aplicación web incluye un botón **"Ver Ejemplo de Prompt"** que te muestra una plantilla lista para copiar y pegar en tu IA favorita junto con el archivo JSON generado.
 
-## Generar informe en Gemini (o cualquier otra IA que sea capaz de procesar archivos json)
+Elabora un **resumen ejecutivo completo** sobre la actividad del canal de inversión, basándote en la información contenida en el **archivo JSON adjunto** y el periodo de sus mensajes. Tu resumen debe incluir:
 
-- Adjuntar archivo json
-- Definir prompt deseado. Ejemplo:
+1. **Debates estratégicos**
+   - Identifica los principales debates sobre estrategias de inversión.
+   - Expón las diferentes posturas que surgieron en cada debate.
 
-```
-Hazme un resumen ejecutivo de la actividad semanal (del 10 de noviembre al 16 de noviembre) de este canal de inversion (información en el archivo json adjunto):
--> Debates sobre la estrategia: enumera los pricipales debates y las diferentes posturas en ellos. 
--> Nombra empresas que hayan tenido grandes debates sobre el negocio, resultados u otros datos relevantes, y si hay alguna conclusión en ellos.
--> Nombra empresas que hayan tenido pequeños debates
--> Enumera resultados y noticias de empresas de esta semana
--> Principales noticias sobre inversión, economía o inversores que no se haya nombrado antes.
--> Empresas más compradas y vendidas
--> Sentimiento del canal y la evolución durante la semana
--> Usuarios más activos
--> Saludos: saluda o haz mención a los usuarios que hayan hecho referencia a Gemini o este resumen
-```
+2. **Empresas con debates relevantes**
+   - Lista las empresas que protagonizaron **grandes debates** relacionados con su modelo de negocio, resultados, riesgos, perspectivas u otros datos importantes.
+   - Indica si se alcanzó alguna conclusión, consenso o tendencia dominante.
+
+3. **Empresas con debates menores**
+   - Enumera las compañías que tuvieron discusiones breves, superficiales o con poca participación.
+
+4. **Resultados empresariales y noticias de la semana**
+   - Resume todos los resultados financieros, actualizaciones y noticias relevantes de empresas mencionadas durante la semana.
+
+5. **Noticias macro y del sector inversor**
+   - Incluye las principales noticias sobre economía, mercados globales, política monetaria o inversores conocidos que **no se hayan mencionado en apartados anteriores**.
+
+6. **Actividad de compra/venta del canal**
+   - Enumera las empresas más compradas y las más vendidas durante la semana.
+
+7. **Análisis de sentimiento del canal**
+   - Describe el sentimiento general (positivo, negativo, mixto, eufórico, temeroso, etc.).
+   - Explica cómo evolucionó a lo largo de la semana.
+
+8. **Usuarios destacados**
+   - Identifica a los usuarios con mayor actividad o contribuciones relevantes.
+
+9. **Saludos personalizados**
+   - Realiza un saludo o mención especial a los usuarios que hayan hecho referencia a **Gemini** o al propio **resumen semanal**.
+
+Asegúrate de que el resumen sea **claro, estructurado y conciso, orientado a que un usuario que no haya podido estar al día del canal pueda saber a alto nivel qué se ha estado hablando**.

@@ -1,14 +1,18 @@
 {
-  "name": "telegram-extractor",
+  "name": "telegram-extractor-app",
   "version": "1.0.0",
-  "description": "",
-  "main": "telegramExtractor.js",
-  "type": "module",
+  "description": "Telegram Extractor Web App",
   "scripts": {
-    "start": "node telegramExtractor.js"
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "unset PREFIX npm_config_prefix && export NVM_DIR=\"$HOME/.nvm\" && [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\" && nvm use 20 && cd server && node index.js",
+    "client": "unset PREFIX npm_config_prefix && export NVM_DIR=\"$HOME/.nvm\" && [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\" && nvm use 20 && cd client && npm run dev",
+    "dev": "npm start"
   },
   "dependencies": {
-    "input": "1.0.1",
-    "telegram": "^2.0.0"
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }

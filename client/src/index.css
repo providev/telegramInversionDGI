@@ -1,0 +1,56 @@
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  /* Reset default Vite centering */
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
+/* Fix for DatePicker visibility */
+.ant-picker-dropdown {
+  z-index: 10000 !important;
+}
+
+.ant-picker-panel-container {
+  background: white !important;
+}
+
+.ant-picker-header {
+  color: rgba(0, 0, 0, 0.88) !important;
+  background: white !important;
+}
+
+.ant-picker-header button {
+  color: rgba(0, 0, 0, 0.45) !important;
+}
+
+.ant-picker-header button:hover {
+  color: rgba(0, 0, 0, 0.88) !important;
+}
+
+.ant-picker-content th {
+  color: rgba(0, 0, 0, 0.88) !important;
+}
+
+.ant-picker-cell {
+  color: rgba(0, 0, 0, 0.88) !important;
+}
+
+.ant-picker-cell-in-view {
+  color: rgba(0, 0, 0, 0.88) !important;
+}
+
+/* Ensure arrows are visible */
+.ant-picker-header .ant-picker-prev-icon,
+.ant-picker-header .ant-picker-next-icon,
+.ant-picker-header .ant-picker-super-prev-icon,
+.ant-picker-header .ant-picker-super-next-icon {
+  color: rgba(0, 0, 0, 0.65) !important;
+  display: inline-block !important;
+}
