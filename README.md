@@ -9,7 +9,7 @@ Desde la consola o terminal del sistema operativo (cmd o powershell en windows, 
 
 1. Instalar Node.js
    Descárgalo desde: https://nodejs.org
-   (Vale cualquier versión moderna: 18, 20, 22…)
+   (Vale cualquier versión moderna: 20, 22…)
 
 2. Tener una cuenta de Telegram
    Para validar al usuario el script pedirá el teléfono (+34XXXXXXXXX) y el código que Telegram envíe.
